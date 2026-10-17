@@ -9,13 +9,13 @@ jobs:
       - name: Unzip project
         run: |
           ls -la
-          if [ -f "Zweletemba_FINAL_PLAYSTORE_READY.zip" ]; then
+          if [ -f "Zwelethemba_FINAL_PLAYSTORE_READY.zip" ]; then
             sudo apt-get install -y unzip
-            unzip -o Zweletemba_FINAL_PLAYSTORE_READY.zip
-            rm Zweletemba_FINAL_PLAYSTORE_READY.zip
+            unzip -o Zwelethemba_FINAL_PLAYSTORE_READY.zip
+            rm Zwelethemba_FINAL_PLAYSTORE_READY.zip
           fi
-          if [ -d "Zweletemba_FINAL_PLAYSTORE_READY" ]; then
-            cp -r Zweletemba_FINAL_PLAYSTORE_READY/* . || true
+          if [ -d "Zwelethemba_FINAL_PLAYSTORE_READY" ]; then
+            cp -r Zwelethemba_FINAL_PLAYSTORE_READY/* . || true
           fi
           if [ -d "Zwelethemba_FINAL_PLAYSTORE_READY" ]; then
             cp -r Zwelethemba_FINAL_PLAYSTORE_READY/* . || true
