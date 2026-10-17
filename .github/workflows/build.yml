@@ -1,20 +1,55 @@
-name: Build APK
+name: Build APK from ZIP
 on: [push]
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      
+      - name: Unzip project
+        run: |
+          ls -la
+          if [ -f "Zweletemba_FINAL_PLAYSTORE_READY.zip" ]; then
+            sudo apt-get install -y unzip
+            unzip -o Zweletemba_FINAL_PLAYSTORE_READY.zip
+            rm Zweletemba_FINAL_PLAYSTORE_READY.zip
+          fi
+          if [ -d "Zweletemba_FINAL_PLAYSTORE_READY" ]; then
+            cp -r Zweletemba_FINAL_PLAYSTORE_READY/* . || true
+          fi
+          if [ -d "Zwelethemba_FINAL_PLAYSTORE_READY" ]; then
+            cp -r Zwelethemba_FINAL_PLAYSTORE_READY/* . || true
+          fi
+          find . -name "pubspec.yaml" | head -5
+          
       - uses: actions/setup-java@v4
         with:
           distribution: 'temurin'
           java-version: '17'
+          
       - uses: subosito/flutter-action@v2
         with:
           flutter-version: '3.22.0'
-      - run: flutter pub get
-      - run: flutter build apk --release
+          channel: 'stable'
+          
+      - name: Setup project
+        run: |
+          PUB=$(find . -name "pubspec.yaml" | head -1)
+          DIR=$(dirname "$PUB")
+          echo "PROJECT_DIR=$DIR" >> $GITHUB_ENV
+          echo "Found at $DIR"
+          cd "$DIR"
+          flutter pub get
+          
+      - name: Build APK
+        run: |
+          cd "${{ env.PROJECT_DIR }}"
+          flutter build apk --release
+          
       - uses: actions/upload-artifact@v4
         with:
-          name: Zwelethemba-APK
-          path: build/app/outputs/flutter-apk/app-release.apk
+          name: Zwelethemba-Chat-APK
+          path: |
+            ${{ env.PROJECT_DIR }}/build/app/outputs/flutter-apk/app-release.apk
+            build/app/outputs/flutter-apk/app-release.apk
+            **/app-release.apk
