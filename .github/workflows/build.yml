@@ -1,26 +1,12 @@
-name: Build Zwelethemba AAB + APK - REAL
+name: Build AAB
 on: [push]
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Extract ZIP if uploaded
-        run: |
-          ls -la
-          if ls *.zip 1>/dev/null 2>&1; then
-            unzip -o "*.zip"
-            if [ -d "Zwelethemba_AAB_FINAL" ]; then
-              cp -r Zwelethemba_AAB_FINAL/* . || true
-              cp -r Zwelethemba_AAB_FINAL/.github . || true
-            fi
-            # Find zip inside zip case
-            find . -name "*.zip" -exec unzip -o {} \; || true
-            # Copy if nested
-            if [ -d "lib" ]; then echo "lib found"; else find . -type d -name "lib" -exec cp -r {} . \; || true; fi
-          fi
-          ls -la
-          cat pubspec.yaml || echo "no pubspec yet"
+      - run: unzip -o "*.zip" || true
+      - run: unzip -o "Zwele*" || true
       - uses: actions/setup-java@v4
         with:
           distribution: 'temurin'
@@ -28,19 +14,14 @@ jobs:
       - uses: subosito/flutter-action@v2
         with:
           flutter-version: '3.22.0'
-          channel: 'stable'
-      - name: Build APK + AAB
-        run: |
-          flutter pub get
-          flutter build apk --release
-          flutter build appbundle --release
-      - name: Upload APK
-        uses: actions/upload-artifact@v4
+      - run: flutter pub get
+      - run: flutter build apk --release
+      - run: flutter build appbundle --release
+      - uses: actions/upload-artifact@v4
         with:
           name: Zwelethemba-APK-REAL-6850
           path: build/app/outputs/flutter-apk/app-release.apk
-      - name: Upload AAB - PLAY STORE
-        uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v4
         with:
           name: Zwelethemba-AAB-PLAYSTORE-6850
           path: build/app/outputs/bundle/release/app-release.aab
