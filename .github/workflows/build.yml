@@ -5,8 +5,14 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - run: unzip -o "*.zip" || true
-      - run: unzip -o "Zwele*" || true
+      - name: Fix phone ZIP
+        run: |
+          unzip -o "*.zip" || true
+          if [ -d "Zwelethemba_AAB_FINAL" ]; then
+            cp -r Zwelethemba_AAB_FINAL/* .
+          fi
+          find . -name "pubspec.yaml" | head -1
+          ls -la
       - uses: actions/setup-java@v4
         with:
           distribution: 'temurin'
@@ -14,6 +20,14 @@ jobs:
       - uses: subosito/flutter-action@v2
         with:
           flutter-version: '3.22.0'
+      - name: Make Android folder
+        run: |
+          flutter create . --project-name zwelethemba_chat --org com.zwelethemba --platforms android --overwrite
+          unzip -o "*.zip" || true
+          if [ -d "Zwelethemba_AAB_FINAL" ]; then
+            cp -r Zwelethemba_AAB_FINAL/lib/* lib/ || true
+          fi
+          ls lib/
       - run: flutter pub get
       - run: flutter build apk --release
       - run: flutter build appbundle --release
