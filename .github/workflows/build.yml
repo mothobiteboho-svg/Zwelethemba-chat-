@@ -1,10 +1,17 @@
-name: Build REAL Chat 6850
+name: Build REAL Zweletemba FIXED
 on: [push]
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      - name: Keep REAL code - No overwrite
+        run: |
+          mkdir -p android/app
+          if [ -f "google-services.json" ]; then cp google-services.json android/app/; fi
+          unzip -o "*.zip" || true
+          if [ -d "Zwelethemba_AAB_FINAL" ]; then cp -r Zwelethemba_AAB_FINAL/* . || true; fi
+          ls lib/
       - uses: actions/setup-java@v4
         with:
           distribution: 'temurin'
@@ -12,21 +19,14 @@ jobs:
       - uses: subosito/flutter-action@v2
         with:
           flutter-version: '3.22.0'
-      - name: Build REAL Firebase
-        run: |
-          flutter create . --project-name zwelethemba_chat --org com.example --platforms android --overwrite
-          mkdir -p android/app
-          if [ -f "google-services.json" ]; then cp google-services.json android/app/; echo "✅ REAL chat!"; fi
-          ls android/app/
-          if [ -d "Zwelethemba_AAB_FINAL" ]; then cp -r Zwelethemba_AAB_FINAL/lib/* lib/ || true; fi
       - run: flutter pub get
       - run: flutter build apk --release
       - run: flutter build appbundle --release
       - uses: actions/upload-artifact@v4
         with:
-          name: Zwelethemba-APK-REAL-FIREBASE-6850
+          name: Zweletemba-APK-REAL-FIXED-6850
           path: build/app/outputs/flutter-apk/app-release.apk
       - uses: actions/upload-artifact@v4
         with:
-          name: Zwelethemba-AAB-REAL-PLAYSTORE-6850
+          name: Zweletemba-AAB-REAL-FIXED-6850
           path: build/app/outputs/bundle/release/app-release.aab
