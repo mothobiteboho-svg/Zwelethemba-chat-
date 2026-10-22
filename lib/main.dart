@@ -17,23 +17,16 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Color(0xFF0B141A),
-        title: Row(
-          children: [
-            Container(
-              width: 40, height: 40,
-              decoration: BoxDecoration(
-                color: Color(0xFF00A884),
-                shape: BoxShape.circle,
-              ),
-              child: Center(child: Text('Z', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 24))),
-            ),
-            SizedBox(width: 10),
-            Text('Zweletemba Chat', style: TextStyle(color: Colors.white)),
-            SizedBox(width: 6),
-            Container(
-              padding: EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+    appBar: AppBar(
+  backgroundColor: Color(0xFF0B141A),
+  title: Row(
+    children: [
+      CircleAvatar(backgroundColor: Color(0xFF00A884), child: Text('Z', style: TextStyle(color: Colors.white))),
+      SizedBox(width: 10),
+      Text('Zweletemba Chat 6850'),
+    ],
+  ),
+),
               decoration: BoxDecoration(
                 border: Border.all(color: Color(0xFF00A884)),
                 borderRadius: BorderRadius.circular(12),
