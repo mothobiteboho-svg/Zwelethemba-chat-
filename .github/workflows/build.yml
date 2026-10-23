@@ -6,55 +6,68 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-java@v4
-        with:
-          distribution: 'temurin'
-          java-version: '17'
+        with: {distribution: 'temurin', java-version: '17'}
       - uses: subosito/flutter-action@v2
-        with:
-          flutter-version: '3.22.0'
-      - name: Build Super-App from your photos
+        with: {flutter-version: '3.22.0'}
+      - name: Build WORKING Super-App
         run: |
           rm -rf android
           flutter create . --platforms=android --project-name zweletemba_chat --org com.zweletemba.chat --overwrite
           cat > lib/main.dart << 'DART'
           import 'package:flutter/material.dart';
-          void main()=>runApp(MaterialApp(debugShowCheckedModeBanner:false, home:SuperApp(), theme: ThemeData.dark()));
+          void main()=>runApp(MaterialApp(debugShowCheckedModeBanner:false, home:SuperApp()));
           class SuperApp extends StatelessWidget {
             final features = [
-              {"t":"Chats","s":"12 new","i":"💬"},{"t":"Groups","s":"5 active","i":"👥"},{"t":"Community","s":"Local hubs","i":"👥"},{"t":"Alerts","s":"3 updates","i":"🔔"},
-              {"t":"Emergency 10111","s":"Call now","i":"🚑"},{"t":"Status","s":"6 stories","i":"⭕"},{"t":"Status Saver","s":"Save media","i":"⬇️"},{"t":"Jobs","s":"9 openings","i":"💼"},
-              {"t":"Clinic Queue B015","s":"Wait: 8 people","i":"🏥"},{"t":"Calls","s":"2 missed","i":"📞"},{"t":"Video Calls","s":"Start call","i":"📹"},{"t":"X Timeline","s":"Trending now","i":"✖️"},
-              {"t":"Matric Results Check","s":"2024 NSC • Pass • 68% Avg","i":"✅"},{"t":"Results Analysis","s":"Level 5 • 3 Dists","i":"📊"},{"t":"Subject Marks","s":"Maths 65% • Eng 70%\nPhySci 58% • LO 76%","i":"🌐"},{"t":"NSFAS Bursary","s":"Approved • R58k Funding","i":"💰"},
-              {"t":"University Application Status","s":"UWC Applied • Pending","i":"📚"},{"t":"AI Matric Tutor","s":"Maths • Science","i":"🧠"},{"t":"11 Languages","s":"isiXhosa • Eng • Afrikaans\n• Sesotho • etc","i":"🏪"},{"t":"Low Data Saver 12kb","s":"On • Saving 80%","i":"📊"},
+              {"t":"Chats","s":"12 new","i":"💬","c":"Zweletemba community chat working!"},
+              {"t":"Groups","s":"5 active","i":"👥","c":"5 Groups active"},
+              {"t":"Community","s":"Local hubs","i":"👥","c":"Local hubs in Worcester 6850"},
+              {"t":"Alerts","s":"3 updates","i":"🔔","c":"3 new alerts"},
+              {"t":"Emergency 10111","s":"Call now","i":"🚑","c":"Tap to call SAPS 10111 - Emergency in Zweletemba"},
+              {"t":"Status","s":"6 stories","i":"⭕","c":"6 status stories"},
+              {"t":"Status Saver","s":"Save media","i":"⬇️","c":"Save WhatsApp status"},
+              {"t":"Jobs","s":"9 openings","i":"💼","c":"9 jobs in Worcester"},
+              {"t":"Clinic Queue B015","s":"Wait: 8 people","i":"🏥","c":"Clinic B015 - 8 people waiting"},
+              {"t":"Calls","s":"2 missed","i":"📞","c":"2 missed calls"},
+              {"t":"Video Calls","s":"Start call","i":"📹","c":"Start video call"},
+              {"t":"X Timeline","s":"Trending now","i":"❌","c":"X trending in SA"},
+              {"t":"Matric Results Check","s":"2024 NSC • Pass • 68% Avg","i":"✅","c":"Matric Results: Pass 68% Avg - 2024 NSC"},
+              {"t":"Results Analysis","s":"Level 5 • 3 Dists","i":"📊","c":"Level 5 with 3 Distinctions!"},
+              {"t":"Subject Marks","s":"Maths 65% • Eng 70%","i":"🌐","c":"Maths 65% Eng 70% PhySci 58% LO 76%"},
+              {"t":"NSFAS Bursary","s":"Approved • R58k","i":"💰","c":"NSFAS Approved R58k Funding!"},
+              {"t":"University Application Status","s":"UWC Applied • Pending","i":"📚","c":"UWC Application: Applied - Pending"},
+              {"t":"AI Matric Tutor","s":"Maths • Science","i":"🧠","c":"AI Tutor for Maths and Science"},
+              {"t":"11 Languages","s":"isiXhosa • Eng • Afrikaans","i":"🏪","c":"11 Languages supported"},
+              {"t":"Low Data Saver 12kb","s":"On • Saving 80%","i":"📊","c":"Low Data Mode ON - Saving 80% data - 12kb only!"},
             ];
             @override
             Widget build(BuildContext context){
-              return Scaffold(backgroundColor: Color(0xFF121212),
-                body: SafeArea(child: Column(children: [
-                  Container(padding: EdgeInsets.all(16), color: Color(0xFF1E1E1E), child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-                    Row(children: [
-                      Container(width:50,height:50,decoration:BoxDecoration(color:Color(0xFF1A3A2A), shape:BoxShape.circle, border:Border.all(color:Color(0xFF4CAF50), width:2)), child:Center(child:Column(mainAxisSize:MainAxisSize.min,children:[Text("🌱",style:TextStyle(fontSize:10)),Text("Z",style:TextStyle(color:Color(0xFF4CAF50), fontWeight:FontWeight.bold, fontSize:20))]))),
+              return Scaffold(backgroundColor:Color(0xFF121212),
+                body: SafeArea(child:Column(children:[
+                  Container(padding:EdgeInsets.all(16), color:Color(0xFF1E1E1E), child:Column(crossAxisAlignment:CrossAxisAlignment.start, children:[
+                    Row(children:[
+                      Container(width:50,height:50,decoration:BoxDecoration(color:Color(0xFF1A3A2A), shape:BoxShape.circle, border:Border.all(color:Color(0xFF4CAF50), width:2)), child:Center(child:Text("Z",style:TextStyle(color:Color(0xFF4CAF50), fontWeight:FontWeight.bold, fontSize:22)))),
                       SizedBox(width:12),
-                      Expanded(child: Column(crossAxisAlignment:CrossAxisAlignment.start,children:[Row(children:[Text("Zwelethemba",style:TextStyle(fontSize:22,fontWeight:FontWeight.bold,color:Colors.white)),SizedBox(width:8),Container(padding:EdgeInsets.symmetric(horizontal:6,vertical:2),decoration:BoxDecoration(color:Color(0xFF2E4A32),borderRadius:BorderRadius.circular(6)),child:Text("6850",style:TextStyle(fontSize:12,color:Color(0xFF4CAF50))))]),Text("Chat",style:TextStyle(fontSize:22,fontWeight:FontWeight.bold,color:Colors.white))])),
-                      Icon(Icons.search, color: Colors.grey), SizedBox(width:12), Icon(Icons.notifications, color: Colors.grey), SizedBox(width:12), Icon(Icons.person, color: Colors.grey),
+                      Column(crossAxisAlignment:CrossAxisAlignment.start, children:[Row(children:[Text("Zweletemba",style:TextStyle(fontSize:22,fontWeight:FontWeight.bold,color:Colors.white)),SizedBox(width:8),Container(padding:EdgeInsets.symmetric(horizontal:6,vertical:2),decoration:BoxDecoration(color:Color(0xFF2E4A32),borderRadius:BorderRadius.circular(6)),child:Text("6850",style:TextStyle(fontSize:12,color:Color(0xFF4CAF50))))]),Text("Chat",style:TextStyle(fontSize:22,fontWeight:FontWeight.bold,color:Colors.white))])
                     ]),
                     SizedBox(height:8),
-                    Text("Super-App • Chats • Groups • Community • AI", style: TextStyle(color: Color(0xFF8BC9A0), fontSize:12)),
+                    Text("Super-App • Chats • Groups • Community • AI", style:TextStyle(color:Color(0xFF8BC9A0), fontSize:12)),
                     SizedBox(height:12),
                     Row(mainAxisAlignment:MainAxisAlignment.spaceBetween, children:[
-                      Text("All Features", style: TextStyle(fontSize:18, fontWeight:FontWeight.bold, color:Colors.white)),
+                      Text("All Features", style:TextStyle(fontSize:18, fontWeight:FontWeight.bold, color:Colors.white)),
                       Container(padding:EdgeInsets.symmetric(horizontal:8,vertical:4), decoration:BoxDecoration(color:Color(0xFF2A2A2A), borderRadius:BorderRadius.circular(12)), child:Text("Offline • Low Data Mode ON • 12kb", style:TextStyle(fontSize:10, color:Colors.grey))),
                     ])
                   ])),
-                  Expanded(child: GridView.builder(padding:EdgeInsets.all(12), gridDelegate:SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount:4, crossAxisSpacing:10, mainAxisSpacing:10, childAspectRatio:0.75), itemCount:features.length, itemBuilder:(c,i){
+                  Expanded(child:GridView.builder(padding:EdgeInsets.all(12), gridDelegate:SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount:4, crossAxisSpacing:10, mainAxisSpacing:10, childAspectRatio:0.75), itemCount:features.length, itemBuilder:(c,i){
                     var f=features[i];
-                    return Container(decoration:BoxDecoration(color:Color(0xFF1E1E1E), borderRadius:BorderRadius.circular(12), border:Border.all(color:Color(0xFF2A2A2A))), child:Column(mainAxisAlignment:MainAxisAlignment.center, children:[
-                      Text(f["i"]!, style:TextStyle(fontSize:26, color:Color(0xFF4CAF50))),
+                    return InkWell(onTap:(){
+                      Navigator.push(context, MaterialPageRoute(builder:(_)=>DetailPage(title:f["t"]!, content:f["c"]!)));
+                    }, child:Container(decoration:BoxDecoration(color:Color(0xFF1E1E1E), borderRadius:BorderRadius.circular(12), border:Border.all(color:Color(0xFF2A2A2A))), child:Column(mainAxisAlignment:MainAxisAlignment.center, children:[
+                      Text(f["i"]!, style:TextStyle(fontSize:26)),
                       SizedBox(height:8),
-                      Text(f["t"]!, textAlign:TextAlign.center, style:TextStyle(fontSize:10, fontWeight:FontWeight.bold, color:Colors.white)),
+                      Text(f["t"]!, textAlign:TextAlign.center, style:TextStyle(fontSize:9, fontWeight:FontWeight.bold, color:Colors.white)),
                       SizedBox(height:4),
-                      Text(f["s"]!, textAlign:TextAlign.center, style:TextStyle(fontSize:8, color: f["t"]=="Emergency 10111"?Color(0xFF4CAF50):Colors.grey)),
-                    ]));
+                      Text(f["s"]!, textAlign:TextAlign.center, style:TextStyle(fontSize:7, color:Colors.grey)),
+                    ])));
                   })),
                   Container(height:60, decoration:BoxDecoration(color:Color(0xFF1E1E1E), border:Border(top:BorderSide(color:Color(0xFF2A2A2A)))), child:Row(mainAxisAlignment:MainAxisAlignment.spaceAround, children:[
                     Column(mainAxisSize:MainAxisSize.min, children:[Icon(Icons.home, color:Color(0xFF4CAF50)), Text("Home", style:TextStyle(color:Color(0xFF4CAF50), fontSize:10))]),
@@ -66,10 +79,25 @@ jobs:
               );
             }
           }
+          class DetailPage extends StatelessWidget {
+            final String title, content;
+            DetailPage({required this.title, required this.content});
+            @override
+            Widget build(BuildContext context){
+              return Scaffold(appBar:AppBar(backgroundColor:Color(0xFF1A3A2A), title:Text(title)), backgroundColor:Color(0xFF121212),
+                body:Center(child:Padding(padding:EdgeInsets.all(20), child:Column(mainAxisAlignment:MainAxisAlignment.center, children:[
+                  Text(title, style:TextStyle(fontSize:24, fontWeight:FontWeight.bold, color:Colors.white)),
+                  SizedBox(height:20),
+                  Text(content, style:TextStyle(fontSize:18, color:Color(0xFF4CAF50)), textAlign:TextAlign.center),
+                  SizedBox(height:40),
+                  ElevatedButton(style:ElevatedButton.styleFrom(backgroundColor:Color(0xFF4CAF50)), onPressed:()=>Navigator.pop(context), child:Text("Back to Zweletemba Chat", style:TextStyle(color:Colors.white)))
+                ]))));
+            }
+          }
           DART
       - run: flutter pub get
       - run: flutter build apk --release --no-tree-shake-icons
       - uses: actions/upload-artifact@v4
         with:
-          name: Zweletemba-Super-App-6850
+          name: Zweletemba-Super-App-WORKING-TAP
           path: build/app/outputs/flutter-apk/app-release.apk
