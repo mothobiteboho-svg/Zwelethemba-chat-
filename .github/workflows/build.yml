@@ -1,4 +1,4 @@
-name: Build REAL Zweletemba FIXED
+name: Build REAL Zweletemba Chat
 on: [push]
 jobs:
   build:
@@ -15,16 +15,113 @@ jobs:
         with:
           flutter-version: '3.22.0'
 
-      - name: Fix Android V1 - Recreate clean
+      - name: Recreate Android V2 + Restore REAL Zweletemba Chat
         run: |
           rm -rf android
           flutter create . --platforms=android --project-name zweletemba_chat --org com.zweletemba.chat --overwrite
-          ls lib/main.dart
+          cat > lib/main.dart << 'DART'
+          import 'package:flutter/material.dart';
+          void main() => runApp(ZweletembaApp());
+          class ZweletembaApp extends StatelessWidget {
+            @override
+            Widget build(BuildContext context) {
+              return MaterialApp(
+                debugShowCheckedModeBanner: false,
+                title: 'Zweletemba Chat 6850',
+                theme: ThemeData(primarySwatch: Colors.green),
+                home: ZweletembaHome(),
+              );
+            }
+          }
+          class ZweletembaHome extends StatelessWidget {
+            final groups = [
+              {"name": "Zweletemba Community 6850", "msg": "Welcome to Zweletemba!", "icon": "Z"},
+              {"name": "Emergency 10111", "msg": "SAPS Worcester - Tap to call", "icon": "🚨"},
+              {"name": "Clinic B015", "msg": "Clinic hours 7am-4pm", "icon": "🏥"},
+              {"name": "School Groups", "msg": "Parents meeting tomorrow", "icon": "🎓"},
+              {"name": "Buy & Sell Zweletemba", "msg": "Selling fresh veggies", "icon": "🛒"},
+              {"name": "Church Announcements", "msg": "Sunday service 10am", "icon": "⛪"},
+            ];
+            @override
+            Widget build(BuildContext context) {
+              return Scaffold(
+                appBar: AppBar(
+                  backgroundColor: Color(0xFF075E54),
+                  title: Row(children: [
+                    CircleAvatar(backgroundColor: Colors.white, child: Text("Z", style: TextStyle(color: Color(0xFF075E54), fontWeight: FontWeight.bold, fontSize: 22))),
+                    SizedBox(width: 10),
+                    Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+                      Text("Zweletemba Chat", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+                      Text("6850 • Worcester", style: TextStyle(fontSize: 12)),
+                    ])
+                  ]),
+                ),
+                body: ListView.builder(
+                  itemCount: groups.length,
+                  itemBuilder: (c,i){
+                    var g = groups[i];
+                    return ListTile(
+                      leading: CircleAvatar(backgroundColor: Color(0xFF25D366), child: Text(g["icon"]!, style: TextStyle(color: Colors.white))),
+                      title: Text(g["name"]!, style: TextStyle(fontWeight: FontWeight.bold)),
+                      subtitle: Text(g["msg"]!),
+                      trailing: Text("02:10", style: TextStyle(fontSize: 11, color: Colors.grey)),
+                      onTap: (){
+                        Navigator.push(context, MaterialPageRoute(builder: (_) => ChatScreen(groupName: g["name"]!)));
+                      },
+                    );
+                  },
+                ),
+                floatingActionButton: FloatingActionButton(
+                  backgroundColor: Color(0xFF25D366),
+                  child: Icon(Icons.chat),
+                  onPressed: (){},
+                ),
+              );
+            }
+          }
+          class ChatScreen extends StatefulWidget {
+            final String groupName;
+            ChatScreen({required this.groupName});
+            @override
+            _ChatScreenState createState() => _ChatScreenState();
+          }
+          class _ChatScreenState extends State<ChatScreen> {
+            List<String> messages = ["Molo! Welcome to ${"group"}", "How is Zweletemba today?"];
+            final ctrl = TextEditingController();
+            @override
+            Widget build(BuildContext context) {
+              return Scaffold(
+                appBar: AppBar(
+                  backgroundColor: Color(0xFF075E54),
+                  title: Text(widget.groupName, style: TextStyle(fontSize: 16)),
+                ),
+                body: Column(children: [
+                  Expanded(child: ListView.builder(
+                    itemCount: messages.length,
+                    itemBuilder: (c,i) => Container(
+                      margin: EdgeInsets.all(8),
+                      padding: EdgeInsets.all(12),
+                      decoration: BoxDecoration(color: Color(0xFFDCF8C6), borderRadius: BorderRadius.circular(8)),
+                      child: Text(messages[i]),
+                    ),
+                  )),
+                  Container(padding: EdgeInsets.all(8), color: Colors.white, child: Row(children: [
+                    Expanded(child: TextField(controller: ctrl, decoration: InputDecoration(hintText: "Type message...", border: OutlineInputBorder(borderRadius: BorderRadius.circular(20))))),
+                    IconButton(icon: Icon(Icons.send, color: Color(0xFF075E54)), onPressed: (){
+                      if(ctrl.text.isNotEmpty){ setState(()=> messages.add(ctrl.text)); ctrl.clear(); }
+                    })
+                  ]))
+                ]),
+              );
+            }
+          }
+          DART
+          cat lib/main.dart
 
       - run: flutter pub get
       - run: flutter build apk --release --no-tree-shake-icons
 
       - uses: actions/upload-artifact@v4
         with:
-          name: Zweletemba-APK-V2-FIXED-6850
+          name: Zweletemba-APK-REAL-Z-LOGO-6850
           path: build/app/outputs/flutter-apk/app-release.apk
