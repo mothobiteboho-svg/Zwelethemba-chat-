@@ -15,29 +15,16 @@ jobs:
         with:
           flutter-version: '3.22.0'
 
-      - name: Fix Android V1 embedding - Recreate android folder
+      - name: Fix Android V1 - Recreate clean
         run: |
-          flutter --version
           rm -rf android
-          flutter create . --platforms=android --project-name zwelethemba_chat
-          mkdir -p android/app
-          if [ -f "google-services.json" ]; then cp google-services.json android/app/; fi
-          unzip -o "*.zip" -d . || true
-          if [ -d "Zweletemba_AAB_FINAL" ]; then cp -r Zweletemba_AAB_FINAL/* . 2>/dev/null || true; fi
-          if [ -f "Zweletemba_AAB_FINAL/google-services.json" ]; then cp Zweletemba_AAB_FINAL/google-services.json android/app/; fi
-          ls lib/
-          ls android/app/
+          flutter create . --platforms=android --project-name zweletemba_chat --org com.zweletemba.chat --overwrite
+          ls lib/main.dart
 
       - run: flutter pub get
-      - run: flutter build apk --release
-      - run: flutter build appbundle --release
+      - run: flutter build apk --release --no-tree-shake-icons
 
       - uses: actions/upload-artifact@v4
         with:
-          name: Zweletemba-APK-REAL-V2-FIXED-6850
+          name: Zweletemba-APK-V2-FIXED-6850
           path: build/app/outputs/flutter-apk/app-release.apk
-
-      - uses: actions/upload-artifact@v4
-        with:
-          name: Zweletemba-AAB-REAL-V2-FIXED-6850
-          path: build/app/outputs/bundle/release/app-release.aab
